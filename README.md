@@ -81,7 +81,7 @@ This project contains Terraform configurations to deploy an Nginx application to
 - Check Terraform and kubectl versions are compatible with your configuration and cluster.
 
 ## Alternative cluster KIND
-
+```bash
 kind create cluster
 
 kubectl create serviceaccount my-user
@@ -123,3 +123,9 @@ users:
 yq eval -o=json kubeconfig.yaml > kubeconfig.json
 
 kubectl --kubeconfig=kubeconfig.json get nodes
+
+goto: https://mitin20.app.spacelift.io/stack/demo/environment -> /mnt/workspace/source/kubeconfig.json
+
+# clean up
+goto: https://mitin20.app.spacelift.io/stack/demo/tasks -> terraform destroy -auto-approve
+```
