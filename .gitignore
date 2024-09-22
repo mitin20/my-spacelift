@@ -22,6 +22,7 @@ terraform.rc
 
 # Ignore kubeconfig file
 kubeconfig.json
+kubeconfig.yaml
 
 # OS generated files
 .DS_Store

@@ -80,3 +80,46 @@ This project contains Terraform configurations to deploy an Nginx application to
 - Ensure your kubeconfig file is correctly configured and you have the necessary permissions in your Kubernetes cluster.
 - Check Terraform and kubectl versions are compatible with your configuration and cluster.
 
+## Alternative cluster KIND
+
+kind create cluster
+
+kubectl create serviceaccount my-user
+
+kubectl create clusterrolebinding my-user-binding \
+  --clusterrole=cluster-admin \
+  --serviceaccount=default:my-user
+
+TOKEN=$(kubectl create token my-user)
+
+echo $TOKEN
+
+curl -k -H "Authorization: Bearer $TOKEN" https://127.0.0.1:53435/api/v1/namespaces
+
+ngrok http http://127.0.0.1:53435
+
+echo '
+apiVersion: v1
+clusters:
+- cluster:
+    insecure-skip-tls-verify: true
+    server: https://***.ngrok-free.app
+  name: kind-kind
+contexts:
+- context:
+    cluster: kind-kind
+    user: kind-kind
+  name: kind-kind
+current-context: kind-kind
+kind: Config
+preferences: {}
+users:
+- name: kind-kind
+  user:
+    token: ***
+      ' \
+>> kubeconfig.yaml
+
+yq eval -o=json kubeconfig.yaml > kubeconfig.json
+
+kubectl --kubeconfig=kubeconfig.json get nodes

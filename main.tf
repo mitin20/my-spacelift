@@ -62,6 +62,6 @@ resource "kubernetes_service" "nginx" {
       target_port = 80
     }
 
-    type = "LoadBalancer"
+    type = "ClusterIP"
   }
 }
